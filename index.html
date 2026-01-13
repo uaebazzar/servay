@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick App Poll</title>
+  <style>
+    /* ===== Modern Black & White UI ===== */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #1c1c1c;
+      padding: 40px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #111;
+      color: #fff;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      color: #111;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #eee;
+    }
+    .message {
+      text-align: center;
+      font-size: 1.1em;
+      margin-top: 20px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>What App Would Make Your Life Easier?</h1>
+
+    <div id="formContainer">
+      <form id="pollForm">
+        <label>Biggest problem:</label>
+        <select id="problem" required>
+          <option value="">Select</option>
+          <option value="Can't find useful apps">Can't find useful apps</option>
+          <option value="Too many apps for small tasks">Too many apps for small tasks</option>
+          <option value="Apps too complicated or slow">Apps too complicated or slow</option>
+          <option value="Apps don’t solve needs">Apps don’t solve needs</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>Type of app you want:</label>
+        <select id="appType" required>
+          <option value="">Select</option>
+          <option value="Productivity">Productivity / Daily tasks</option>
+          <option value="Entertainment">Fun / Entertainment</option>
+          <option value="Rewards">Rewards / Coupons / Discounts</option>
+          <option value="AI Tools">AI / Smart tools</option>
+          <option value="Something new">Something completely new</option>
+        </select>
+
+        <label>How often would you use it?</label>
+        <select id="frequency" required>
+          <option value="">Select</option>
+          <option value="Daily">Every day</option>
+          <option value="Few times a week">Few times a week</option>
+          <option value="Rarely">Rarely</option>
+        </select>
+
+        <label>Would you pay for it?</label>
+        <select id="pay" required>
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div id="message" class="message" style="display:none;"></div>
+  </div>
+
+  <!-- Firebase v12+ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLoLAI1zymsLevD8r0gew5qT43JhIHUFk",
+      authDomain: "servay-3ba5c.firebaseapp.com",
+      projectId: "servay-3ba5c",
+      storageBucket: "servay-3ba5c.firebasestorage.app",
+      messagingSenderId: "743054579294",
+      appId: "1:743054579294:web:3db015ed9d78f7bf2006cf",
+      measurementId: "G-EHSNE706DR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('pollForm');
+    const messageDiv = document.getElementById('message');
+    const formContainer = document.getElementById('formContainer');
+
+    // Check if user already submitted
+    if (localStorage.getItem('pollSubmitted')) {
+      formContainer.style.display = 'none';
+      messageDiv.style.display = 'block';
+      messageDiv.textContent = 'You have already submitted. Thank you!';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Prevent double submission
+      if (localStorage.getItem('pollSubmitted')) return;
+
+      try {
+        await addDoc(collection(db, "pollResponses"), {
+          problem: document.getElementById('problem').value,
+          appType: document.getElementById('appType').value,
+          frequency: document.getElementById('frequency').value,
+          pay: document.getElementById('pay').value,
+          timestamp: serverTimestamp()
+        });
+
+        // Mark as submitted
+        localStorage.setItem('pollSubmitted', 'true');
+
+        // Hide form, show message
+        formContainer.style.display = 'none';
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = 'Thank you! Your response has been recorded.';
+      } catch (err) {
+        console.error(err);
+        alert('Error submitting your response.');
+      }
+    });
+  </script>
+</body>
+</html>
