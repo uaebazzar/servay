@@ -1,215 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Quick App Poll</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* ===== Modern Black & White UI ===== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background: #1e1e1e;
-      padding: 50px 40px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: transform 0.3s ease;
-    }
-    .container:hover {
-      transform: translateY(-3px);
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 1.6em;
-      margin-bottom: 35px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    label {
-      display: block;
-      margin: 15px 0 8px;
-      font-weight: 600;
-      font-size: 0.95em;
-      color: #ccc;
-    }
-
-    select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #111;
-      color: #fff;
-      font-size: 1em;
-      outline: none;
-      transition: 0.2s all;
-    }
-
-    select:focus {
-      background: #222;
-      box-shadow: 0 0 0 2px #fff inset;
-    }
-
-    button {
-      margin-top: 30px;
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-      font-size: 1em;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #eee;
-      transform: translateY(-2px);
-    }
-
-    .message {
-      text-align: center;
-      font-size: 1.1em;
-      margin-top: 20px;
-      color: #0f0;
-      font-weight: 600;
-    }
-
-    /* Smooth fade-in for message */
-    .fade-in {
-      animation: fadeIn 0.8s ease forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Small subtle info */
-    .info {
-      text-align: center;
-      font-size: 0.85em;
-      color: #888;
-      margin-top: 15px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Quick Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Inter', sans-serif; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0;}
+.container { background:#1e1e1e; padding:50px 40px; border-radius:16px; width:100%; max-width:480px; box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+h1 { text-align:center; font-size:1.6em; margin-bottom:35px; font-weight:600; color:#fff;}
+label { display:block; margin:15px 0 8px; font-weight:600; font-size:0.95em; color:#ccc;}
+select, input[type=text] { width:100%; padding:12px; border-radius:8px; border:none; background:#111; color:#fff; font-size:1em; outline:none; margin-bottom:15px;}
+select:focus, input:focus { background:#222; box-shadow:0 0 0 2px #fff inset;}
+button { width:100%; padding:14px; border:none; border-radius:10px; background:#fff; color:#111; font-size:1em; font-weight:600; cursor:pointer; transition:0.3s;}
+button:hover { background:#eee; transform:translateY(-2px);}
+.info { text-align:center; font-size:0.85em; color:#888; margin-top:15px;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>What App Would Make Your Life Easier?</h1>
+<div class="container">
+  <h1>Quick Survey</h1>
 
-    <div id="formContainer">
-      <form id="pollForm">
-        <label>Biggest problem:</label>
-        <select id="problem" required>
-          <option value="">Select</option>
-          <option value="Can't find useful apps">Can't find useful apps</option>
-          <option value="Too many apps for small tasks">Too many apps for small tasks</option>
-          <option value="Apps too complicated or slow">Apps too complicated or slow</option>
-          <option value="Apps don’t solve needs">Apps don’t solve needs</option>
-          <option value="Other">Other</option>
-        </select>
+  <div id="formContainer">
+    <form id="surveyForm">
+      <label>Your Name (or Nickname):</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
 
-        <label>Type of app you want:</label>
-        <select id="appType" required>
-          <option value="">Select</option>
-          <option value="Productivity">Productivity / Daily tasks</option>
-          <option value="Entertainment">Fun / Entertainment</option>
-          <option value="Rewards">Rewards / Coupons / Discounts</option>
-          <option value="AI Tools">AI / Smart tools</option>
-          <option value="Something new">Something completely new</option>
-        </select>
+      <label>Biggest problem:</label>
+      <select id="problem" required>
+        <option value="">Select</option>
+        <option value="Can't find useful apps">Can't find useful apps</option>
+        <option value="Too many apps for small tasks">Too many apps for small tasks</option>
+        <option value="Apps too complicated or slow">Apps too complicated or slow</option>
+        <option value="Apps don’t solve needs">Apps don’t solve needs</option>
+        <option value="Other">Other</option>
+      </select>
 
-        <label>How often would you use it?</label>
-        <select id="frequency" required>
-          <option value="">Select</option>
-          <option value="Daily">Every day</option>
-          <option value="Few times a week">Few times a week</option>
-          <option value="Rarely">Rarely</option>
-        </select>
+      <label>Type of app you want:</label>
+      <select id="appType" required>
+        <option value="">Select</option>
+        <option value="Productivity">Productivity / Daily tasks</option>
+        <option value="Entertainment">Fun / Entertainment</option>
+        <option value="Rewards">Rewards / Coupons / Discounts</option>
+        <option value="AI Tools">AI / Smart tools</option>
+        <option value="Something new">Something completely new</option>
+      </select>
 
-        <label>Would you pay for it?</label>
-        <select id="pay" required>
-          <option value="">Select</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
+      <label>How often would you use it?</label>
+      <select id="frequency" required>
+        <option value="">Select</option>
+        <option value="Daily">Every day</option>
+        <option value="Few times a week">Few times a week</option>
+        <option value="Rarely">Rarely</option>
+      </select>
 
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+      <label>Would you pay for it?</label>
+      <select id="pay" required>
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
 
-    <div id="message" class="message fade-in" style="display:none;"></div>
-    <div class="info">Your response is anonymous and secure.</div>
+      <button type="submit">Submit</button>
+    </form>
   </div>
 
-  <!-- Firebase v12+ -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  <div class="info">Your response is anonymous and secure.</div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDLoLAI1zymsLevD8r0gew5qT43JhIHUFk",
-      authDomain: "servay-3ba5c.firebaseapp.com",
-      projectId: "servay-3ba5c",
-      storageBucket: "servay-3ba5c.firebasestorage.app",
-      messagingSenderId: "743054579294",
-      appId: "1:743054579294:web:3db015ed9d78f7bf2006cf",
-      measurementId: "G-EHSNE706DR"
-    };
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getFirestore(app);
+const firebaseConfig = {
+  apiKey: "AIzaSyDLoLAI1zymsLevD8r0gew5qT43JhIHUFk",
+  authDomain: "servay-3ba5c.firebaseapp.com",
+  databaseURL: "https://servay-3ba5c-default-rtdb.firebaseio.com",
+  projectId: "servay-3ba5c",
+  storageBucket: "servay-3ba5c.appspot.com",
+  messagingSenderId: "743054579294",
+  appId: "1:743054579294:web:3db015ed9d78f7bf2006cf",
+  measurementId: "G-EHSNE706DR"
+};
 
-    const form = document.getElementById('pollForm');
-    const messageDiv = document.getElementById('message');
-    const formContainer = document.getElementById('formContainer');
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-    // Check if user already submitted
-    if (localStorage.getItem('pollSubmitted')) {
-      formContainer.style.display = 'none';
-      messageDiv.style.display = 'block';
-      messageDiv.textContent = 'You have already submitted. Thank you!';
-    }
+const form = document.getElementById('surveyForm');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (localStorage.getItem('pollSubmitted')) return;
+// Prevent multiple submissions
+if(localStorage.getItem('pollSubmitted')){
+  form.innerHTML = "<p style='text-align:center;color:#0f0;font-weight:600;'>You have already submitted. Thank you!</p>";
+}
 
-      try {
-        await addDoc(collection(db, "pollResponses"), {
-          problem: document.getElementById('problem').value,
-          appType: document.getElementById('appType').value,
-          frequency: document.getElementById('frequency').value,
-          pay: document.getElementById('pay').value,
-          timestamp: serverTimestamp()
-        });
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(localStorage.getItem('pollSubmitted')) return;
 
-        localStorage.setItem('pollSubmitted', 'true');
+  const name = document.getElementById('name').value;
+  const problem = document.getElementById('problem').value;
+  const appType = document.getElementById('appType').value;
+  const frequency = document.getElementById('frequency').value;
+  const pay = document.getElementById('pay').value;
 
-        formContainer.style.display = 'none';
-        messageDiv.style.display = 'block';
-        messageDiv.textContent = 'Thank you! Your response has been recorded.';
-      } catch (err) {
-        console.error(err);
-        alert('Error submitting your response.');
-      }
+  try{
+    await push(ref(db, 'submissions'), {
+      name, problem, appType, frequency, pay, timestamp: serverTimestamp()
     });
-  </script>
+
+    localStorage.setItem('pollSubmitted', 'true');
+    window.location.href = 'thankyou.html'; // redirect to Thank You page
+  } catch(err){
+    console.error(err);
+    alert('Error submitting your response.');
+  }
+});
+</script>
 </body>
 </html>
