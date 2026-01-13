@@ -3,66 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <title>Quick App Poll</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     /* ===== Modern Black & White UI ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #111;
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      margin: 0;
     }
+
     .container {
-      background: #1c1c1c;
-      padding: 40px;
-      border-radius: 12px;
+      background: #1e1e1e;
+      padding: 50px 40px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 450px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      max-width: 480px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
     }
+    .container:hover {
+      transform: translateY(-3px);
+    }
+
     h1 {
       text-align: center;
-      font-size: 1.5em;
-      margin-bottom: 30px;
+      font-size: 1.6em;
+      margin-bottom: 35px;
+      font-weight: 600;
+      color: #fff;
     }
+
     label {
       display: block;
-      margin: 15px 0 5px;
-      font-weight: bold;
+      margin: 15px 0 8px;
+      font-weight: 600;
+      font-size: 0.95em;
+      color: #ccc;
     }
+
     select {
       width: 100%;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       border: none;
       background: #111;
       color: #fff;
       font-size: 1em;
+      outline: none;
+      transition: 0.2s all;
     }
+
+    select:focus {
+      background: #222;
+      box-shadow: 0 0 0 2px #fff inset;
+    }
+
     button {
-      margin-top: 25px;
+      margin-top: 30px;
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
       background: #fff;
       color: #111;
       font-size: 1em;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       transition: 0.3s;
     }
     button:hover {
       background: #eee;
+      transform: translateY(-2px);
     }
+
     .message {
       text-align: center;
       font-size: 1.1em;
       margin-top: 20px;
       color: #0f0;
+      font-weight: 600;
+    }
+
+    /* Smooth fade-in for message */
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Small subtle info */
+    .info {
+      text-align: center;
+      font-size: 0.85em;
+      color: #888;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -111,7 +152,8 @@
       </form>
     </div>
 
-    <div id="message" class="message" style="display:none;"></div>
+    <div id="message" class="message fade-in" style="display:none;"></div>
+    <div class="info">Your response is anonymous and secure.</div>
   </div>
 
   <!-- Firebase v12+ -->
@@ -147,8 +189,6 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      // Prevent double submission
       if (localStorage.getItem('pollSubmitted')) return;
 
       try {
@@ -160,10 +200,8 @@
           timestamp: serverTimestamp()
         });
 
-        // Mark as submitted
         localStorage.setItem('pollSubmitted', 'true');
 
-        // Hide form, show message
         formContainer.style.display = 'none';
         messageDiv.style.display = 'block';
         messageDiv.textContent = 'Thank you! Your response has been recorded.';
