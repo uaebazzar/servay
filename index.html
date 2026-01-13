@@ -67,7 +67,6 @@ button:hover { background:#eee; transform:translateY(-2px);}
   <div class="info">Your response is anonymous and secure.</div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
@@ -85,12 +84,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
 const form = document.getElementById('surveyForm');
 
-// Prevent multiple submissions
-if(localStorage.getItem('pollSubmitted')){
-  form.innerHTML = "<p style='text-align:center;color:#0f0;font-weight:600;'>You have already submitted. Thank you!</p>";
+// Redirect if already submitted
+if (localStorage.getItem('pollSubmitted')) {
+    window.location.href = 'thankyou.html';
 }
 
 form.addEventListener('submit', async (e)=>{
@@ -109,7 +107,7 @@ form.addEventListener('submit', async (e)=>{
     });
 
     localStorage.setItem('pollSubmitted', 'true');
-    window.location.href = 'thankyou.html'; // redirect to Thank You page
+    window.location.href = 'thankyou.html';
   } catch(err){
     console.error(err);
     alert('Error submitting your response.');
