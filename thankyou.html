@@ -40,10 +40,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
 const totalEl = document.getElementById('total');
 const userList = document.getElementById('userList');
-
 const submissionsRef = ref(db, 'submissions');
 
 // Real-time listener
